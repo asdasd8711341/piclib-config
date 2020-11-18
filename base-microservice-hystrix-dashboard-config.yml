@@ -1,0 +1,13 @@
+spring:
+  profiles:
+    active:
+      - dev
+---
+
+server:
+  port: 9001
+  
+spring:
+  application:
+    name: base-microservice-hystrix-dashboard
+  profiles: beta    
