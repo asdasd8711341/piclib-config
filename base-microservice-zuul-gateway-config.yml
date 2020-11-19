@@ -7,17 +7,18 @@ spring:
 
 server:
   port: 9501
-
+  
+  
 eureka:
   client: # 客户端进行Eureka注册的配置
     service-url:
-      defaultZone: http://admin:a@eureka1:7001/eureka
-    register-with-eureka: true     #注册 到eureka中
+      defaultZone: http://admin:a@eureka1:7031/eureka,http://admin:a@eureka2:7032/eureka,http://admin:a@eureka3:7033/eureka
+    register-with-eureka: true      #注册到eureka
   instance:
-    instance-id: microservice-zuul-gateway
+    instance-id: base-microservice-zuul-gateway
     prefer-ip-address: true
-    lease-renewal-interval-in-seconds: 2    #设置心跳间隔时间
-    lease-expiration-duration-in-seconds: 5  # 租约超时时间间隔
+    lease-renewal-interval-in-seconds: 10    #设置心跳间隔时间
+    lease-expiration-duration-in-seconds: 50  # 租约超时时间间隔
 
 info:
   app.name: microservice-zuul-gateway
@@ -28,14 +29,13 @@ info:
 
 
 
-
 spring:
   application:
-    name:  microservice-zuul-gateway
+    name:  base-microservice-zuul-gateway
   security:
     user:
       name: admin
-      password: b
+      password: a
   profiles: beta    
 
 
@@ -61,23 +61,26 @@ spring:
 
 #传统路由方式的配置   写死的,没有eureka的时候用
 #公共前缀
+# zuul:
+#   routes:
+#     user1:
+#       path: /user1-proxy/**
+#       serviceId: microservice-provider-user
+#     user2:        #传统的路由方式
+#       path: /user2-proxy/**
+#       url: http://localhost:5555/
+#     product:
+#       path: /product-proxy/**
+#       serviceId: microservice-provider
+#       sensitiveHeaders:
+#   ignored-services:
+#     "*"
+#   prefix: /yc-api    #公共前缀
 zuul:
-  routes:
-    user1:
-      path: /user1-proxy/**
-      serviceId: microservice-provider-user
-    user2:        #传统的路由方式
-      path: /user2-proxy/**
-      url: http://localhost:5555/
-    product:
-      path: /product-proxy/**
-      serviceId: microservice-provider
-      sensitiveHeaders:
-  ignored-services:
-    "*"
-  prefix: /yc-api    #公共前缀
+  sensitiveHeaders:    #去掉敏感头设置,   以实现将  权限 信息向过滤器链传递 的目标
 
 
 logging:
   level:
-    com.gsn.piclib: debug
+    com.gsn: debug
+    org.springframework.boot.autoconfigure.security: debug
