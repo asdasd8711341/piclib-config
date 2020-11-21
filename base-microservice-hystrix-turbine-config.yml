@@ -9,8 +9,8 @@ eureka:
   client:
     register-with-eureka: false
     service-url:
-      defaultZone: http://admin:a@eureka1:7033/eureka,http://admin:a@eureka2:7031/eureka,http://admin:a@eureka3:7032/eureka
-
+      #defaultZone: http://admin:a@eureka1:7033/eureka,http://admin:a@eureka2:7031/eureka,http://admin:a@eureka3:7032/eureka
+      defaultZone: http://admin:a@eureka2:7031/eureka
 turbine:
   app-config: piclibapi,piclibweb,piclibwap,userapi,userweb,userwap  #  配置Eureka中的serviceId列表，表明监控哪些服务, 启动后从配置中心中进行更新
   aggregator:
