@@ -19,7 +19,7 @@ turbine:
   combine-host-port: true   
 spring:
   application:
-    name: base-microservice-hystrix-dashboard
+    name: base-microservice-hystrix-turbine
   profiles: beta 
  
  
