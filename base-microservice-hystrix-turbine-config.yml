@@ -12,10 +12,14 @@ eureka:
       defaultZone: http://admin:a@eureka1:7033/eureka,http://admin:a@eureka2:7031/eureka,http://admin:a@eureka3:7032/eureka
 
 turbine:
-  app-config: MICROSERVICE-PROVIDER  #需要收集信息的服务名
-  cluster-name-expression: new String("default")
-  combine-host-port: true # 同一主机上的服务通过主机名和端口号的组合来进行区分，默认以host来区分
+  app-config: piclibapi,piclibweb,piclibwap,userapi,userweb,userwap  #  配置Eureka中的serviceId列表，表明监控哪些服务, 启动后从配置中心中进行更新
+  aggregator:
+    cluster-config: default     #  指定聚合哪些集群，多个使用","分割，默认为default。
+  cluster-name-expression: new String("default")   #表示集群的名字为default
+  combine-host-port: true   
 spring:
   application:
     name: base-microservice-hystrix-dashboard
   profiles: beta 
+ 
+ 
