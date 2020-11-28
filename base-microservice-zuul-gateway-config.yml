@@ -10,12 +10,12 @@ server:
   
   
 eureka:
-  client: # 客户端进行Eureka注册的配置
+  client: # zuul客户端到Eureka注册, 这样 feign的客户端就能找到zuul服务了
     service-url:
-      defaultZone: http://admin:a@eureka1:7031/eureka,http://admin:a@eureka2:7032/eureka,http://admin:a@eureka3:7033/eureka
+      defaultZone: http://admin:a@eureka1:7301/eureka
     register-with-eureka: true      #注册到eureka
   instance:
-    instance-id: base-microservice-zuul-gateway
+    instance-id: base-microservice-zuul-gateway1   #实例名
     prefer-ip-address: true
     lease-renewal-interval-in-seconds: 10    #设置心跳间隔时间
     lease-expiration-duration-in-seconds: 50  # 租约超时时间间隔
@@ -38,47 +38,16 @@ spring:
       password: a
   profiles: beta    
 
-
-#zuul:
-#  routes:    #路由配置
-#    microservice-provider-user:  /user-proxy/**       #起个别名
-#  ignored-services:
-#    #microservice-provider-user  #忽略掉用户服务的名称   忽略单个
-#    "*"     #忽略全部
-
-#另一种面向服务的路由配置方式
-#在配置文件中出现的user其实是一个逻辑名称，这个名称主要作用是将path与serviceId绑定在一起
-#zuul:
-#  routes:
-#    user.path: /user-proxy/**      #  *  单路径下的  /user-proxy/b /user-proxy/a /user-proxy/c  |  **  全路径下的  /user-proxy/b /user-proxy/a/b/c /user-proxy/a/b
-#    user.serviceId: microservice-provider-user
-#  ignored-services:
-#    "*"             #必须标双引号
-
-
-
-
-
-#传统路由方式的配置   写死的,没有eureka的时候用
-#公共前缀
-# zuul:
-#   routes:
-#     user1:
-#       path: /user1-proxy/**
-#       serviceId: microservice-provider-user
-#     user2:        #传统的路由方式
-#       path: /user2-proxy/**
-#       url: http://localhost:5555/
-#     product:
-#       path: /product-proxy/**
-#       serviceId: microservice-provider
-#       sensitiveHeaders:
-#   ignored-services:
-#     "*"
-#   prefix: /yc-api    #公共前缀
 zuul:
-  sensitiveHeaders:    #去掉敏感头设置,   以实现将  权限 信息向过滤器链传递 的目标
-
+  routes:
+    piclib:
+      path: /piclib-proxy/**
+      serviceId: MICROSERVICE-PROVIDER-PICLIB
+      sensitiveHeaders:
+  ignored-services:      # "*"代表隐藏所有的服务名，这样就不能通过zuul直接用服务名访问真实的服务了.
+    "*"
+  prefix: /yc-api    #公共前缀
+  #sensitiveHeaders:    #去掉敏感头设置,   以实现将  权限 信息向过滤器链传递 的目标
 
 logging:
   level:
